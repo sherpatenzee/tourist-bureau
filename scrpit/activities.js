@@ -2,6 +2,9 @@
 
 let activities = [
   {
+    name: ""
+  },
+  {
     category: "Adventures",
     id: "A101",
     name: "Valley Hot Air Balloons",
@@ -104,6 +107,8 @@ window.onload = function () {
   document.getElementById("list").style.display = "none";
   let category = document.getElementById("category");
   category.onchange = activity;
+  let list = document.getElementById("list");
+  list.onchange = displayActivity;
 
 }
 
@@ -112,6 +117,7 @@ function activity() {
   document.getElementById("list").style.display = "none";
   let category = document.getElementById("category");
   let list = document.getElementById("list");
+  let para = document.getElementById("para");
 
   let index = category.selectedIndex;
   let length = activities.length
@@ -119,6 +125,10 @@ function activity() {
 
 
   if (index == 1) {
+   
+    let options = document.createElement("option");
+    options.text = "Select an adventure";
+    list.appendChild(options);
 
     for (let i = 0; i < length; i++) {
 
@@ -137,13 +147,20 @@ function activity() {
 
     }
     list.style.display = "block"
-    
-   } else if (index == 2) {
+
+
+  } else if (index == 2) {
+
+    let options = document.createElement("option");
+    options.text = "Select an Arts and Crafts";
+    list.appendChild(options);
 
     for (let i = 0; i < length; i++) {
 
+
       if (activities[i].category == "Arts & Crafts") {
 
+        
         let options = document.createElement("option");
 
         options.text = activities[i].name;
@@ -160,7 +177,12 @@ function activity() {
 
     list.style.display = "block";
 
+
   } else if (index == 3) {
+
+    let options = document.createElement("option");
+    options.text = "Select a Museum";
+    list.appendChild(options);
 
     for (let i = 0; i < length; i++) {
 
@@ -176,39 +198,20 @@ function activity() {
 
         list.appendChild(options);
 
-       }
-  
+      }
+
     }
 
     list.style.display = "block";
 
-  }  else if (index == 4) {
+  } else if (index == 4) {
+    let options = document.createElement("option");
+    options.text = "Select a Wine Tasting";
+    list.appendChild(options);
 
     for (let i = 0; i < length; i++) {
 
       if (activities[i].category == "Wine Tastings") {
-
-        let options = document.createElement("option");
-
-        options.text = activities[i].name;
-        options.id = activities[i].id;
-        options.name = activities[i].location;
-        options.price = activities[i].price;
-        options.description = activities[i].description;
-
-        list.appendChild(options);
-
-       }
-
-   }
-
-   list.style.display = "block";
-
-  } else if (index == 5) {
-
-    for (let i = 0; i < length; i++) {
-
-      if (activities[i].category == "Other") {
 
         let options = document.createElement("option");
 
@@ -226,7 +229,63 @@ function activity() {
 
     list.style.display = "block";
 
+  } else if (index == 5) {
+
+    let options = document.createElement("option");
+    options.text = "Select Other";
+    list.appendChild(options);
+
+    for (let i = 0; i < length; i++) {
+
+      if (activities[i].category == "Other") {
+
+        let options = document.createElement("option");
+
+        options.text = activities[i].name;
+        options.id = activities[i].id;
+        options.name = activities[i].location;
+        options.price = activities[i].price;
+        options.description = activities[i].description;
+
+        list.appendChild(options);
+      }
+    }
+
+    list.style.display = "block";
+
+  } else {
+ 
+    para.innerHTML = "";
+  }
+}
+
+function displayActivity() {
+ 
+  let category = document.getElementById("category");
+  let para = document.getElementById("para");
+  let list = document.getElementById("list");
+  let k = 0;
+
+  if (category.selectedIndex == 2) {
+    k = 3;
+  } else if (category.selectedIndex == 3) {
+    k = 5
+  } else if (category.selectedIndex == 4) {
+    k = 8
+  } else if (category.selectedIndex == 5) {
+    k = 10
   }
   
+  for (let i = k; i < list.length + k; i++) {
+    if (list.value == activities[i].name) {
+      para.innerHTML = list[i - k].text;
+    }
+
+  }
+  return false;
+
 }
-  
+
+
+
+
