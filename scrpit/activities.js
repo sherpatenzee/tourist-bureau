@@ -109,6 +109,7 @@ window.onload = function () {
   category.onchange = activity;
   let list = document.getElementById("list");
   list.onchange = displayActivity;
+  
 
 }
 
@@ -260,7 +261,7 @@ function activity() {
 }
 
 function displayActivity() {
- 
+  document.getElementById("para").style.display = "none";
   let category = document.getElementById("category");
   let para = document.getElementById("para");
   let list = document.getElementById("list");
@@ -277,9 +278,16 @@ function displayActivity() {
   }
   
   for (let i = k; i < list.length + k; i++) {
+    
     if (list.value == activities[i].name) {
-      para.innerHTML = list[i - k].text;
+      
+      para.innerHTML = "You selected : " + list[i - k].text + "<br />" + "ID : " +list[i - k].id  + "<br />"  + "Description : " + list[i - k].description + "<br />" + "Location : " + list[i - k].name + "<br />" + "Price : " + " $ " + list[i - k].price ;
+      para.style.display = "block"
+
+    }else if(list.value == ""){
+      para.innerHTML = ""
     }
+  
 
   }
   return false;
