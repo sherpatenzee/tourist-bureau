@@ -109,8 +109,12 @@ window.onload = function () {
   category.onchange = activity;
   let list = document.getElementById("list");
   list.onchange = displayActivity;
+  document.getElementById("form").style.display = "none";
+  let btn = document.getElementById("purchaseBtn");
+  btn.onclick = purchaseBtn;
+  let reset = document.getElementById("reset") ;
+  reset.onclick = resetBtn;
   
-
 }
 
 function activity() {
@@ -260,11 +264,15 @@ function activity() {
   }
 }
 
+//dispaly activity description
 function displayActivity() {
+  document.getElementById("form").style.display = "none";
   document.getElementById("para").style.display = "none";
   let category = document.getElementById("category");
   let para = document.getElementById("para");
   let list = document.getElementById("list");
+  let form = document.getElementById("form")
+  
   let k = 0;
 
   if (category.selectedIndex == 2) {
@@ -279,18 +287,48 @@ function displayActivity() {
   
   for (let i = k; i < list.length + k; i++) {
     
-    if (list.value == activities[i].name) {
+    if (list.value == activities[i].name && list[i-k].price > 0 ) {
       
       para.innerHTML = "You selected : " + list[i - k].text + "<br />" + "ID : " +list[i - k].id  + "<br />"  + "Description : " + list[i - k].description + "<br />" + "Location : " + list[i - k].name + "<br />" + "Price : " + " $ " + list[i - k].price ;
+
       para.style.display = "block"
 
-    }else if(list.value == ""){
-      para.innerHTML = ""
-    }
-  
+      form.style.display = "block";
+      
+    }else if(list.value == activities[i].name && list[i-k].price == 0){
+      para.innerHTML = "You selected : " + list[i - k].text + "<br />" + "ID : " +list[i - k].id  + "<br />"  + "Description : " + list[i - k].description + "<br />" + "Location : " + list[i - k].name + "<br />" + "Price : " + " $ " + list[i - k].price ;
 
+      para.style.display = "block"
+
+      form.style.display = "none";
+
+    }else if(list.value == "" ){
+      para.innerHTML = ""
+
+    
+     }
   }
+
   return false;
+  
+}
+
+//purchase button
+function purchaseBtn(){
+  let msg = document.getElementById("message") ;
+  msg.innerHTML = "Your credit card has been charged $(amount) for (number-of- tickets) to (adventure-name). A confirmation email has been sent to (email).";
+
+
+  msg.display.style = "block"
+
+  
+}
+
+//reset button
+function resetBtn(){
+  let msg = document.getElementById("message") ;
+  msg.innerHTML = ""
+  msg.display.style = "block"
 
 }
 
