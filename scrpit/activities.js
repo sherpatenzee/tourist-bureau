@@ -1,9 +1,7 @@
 "use strict";
+let categories = ["Adventures", "Arts & Crafts", "Museums", "Wine Tastings", "Other"];
 
 let activities = [
-  {
-    name: ""
-  },
   {
     category: "Adventures",
     id: "A101",
@@ -104,234 +102,167 @@ let activities = [
 
 window.onload = function () {
 
-  document.getElementById("list").style.display = "none";
-  let category = document.getElementById("category");
-  category.onchange = activity;
-  let list = document.getElementById("list");
-  list.onchange = displayActivity;
-  document.getElementById("form").style.display = "none";
-  let btn = document.getElementById("purchaseBtn");
-  btn.onclick = purchaseBtn;
-  let reset = document.getElementById("reset") ;
-  reset.onclick = resetBtn;
+  document.getElementById("checkoutForm").style.display = "none";
+  document.getElementById("adventureSelect").style.display = "none";
   
+
+  let categorySelect = document.getElementById("categorySelect");
+  categorySelect.onchange = categorySelectOnchange;
+  let adventureSelect = document.getElementById("adventureSelect");
+  adventureSelect.onchange = adventureSelectOnChange;
+  let purchaseBtn = document.getElementById("purchaseBtn");
+  purchaseBtn.onclick = purchaseBtnOnClick;
+  let resetBtn = document.getElementById("resetBtn");
+  resetBtn.onclick = resetBtnOnClick;
+
+  populateCategorySelect();
+
 }
 
-function activity() {
+//problematically populating option data
+function populateCategorySelect(){
+  const categorySelect = document.getElementById("categorySelect");
+  
 
-  document.getElementById("list").style.display = "none";
-  let category = document.getElementById("category");
-  let list = document.getElementById("list");
-  let para = document.getElementById("para");
+  let defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = "Please select a Category!";
+  categorySelect.appendChild(defaultOption);
+  
+  for (let category of categories){
+    let newOption = document.createElement("option");
+    newOption.value = category;
+    newOption.textContent = category;
+    categorySelect.appendChild(newOption);
+  }
+}
+// append options
 
-  let index = category.selectedIndex;
+function categorySelectOnchange() {
+
+  let categorySelect = document.getElementById("categorySelect");
+  let adventureSelect = document.getElementById("adventureSelect");
+  let adventureDetailParagraph = document.getElementById("adventureDetailParagraph");
+
+  adventureSelect.style.display = "none";
+
+  let index = categorySelect.selectedIndex;
   let length = activities.length
-  list.length = 0
+
+  //initialize the adventureSelect by clearing it and addign the first option
+  adventureSelect.length = 0
+  let defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = "Select and adventure!";
+  adventureSelect.appendChild(defaultOption);
 
 
-  if (index == 1) {
-   
-    let options = document.createElement("option");
-    options.text = "Select an adventure";
-    list.appendChild(options);
+  // figure out selected category and get just those adventures from the array
+  let selectedCategory = categorySelect.value;
+  let activitiesInSelectedCategory = getActivitiesForCategory(activities, selectedCategory);
 
-    for (let i = 0; i < length; i++) {
+  //loop through the filtered adventures and add entries to the dropdown..
+  let activitiesInSelectedCategoryLength = activitiesInSelectedCategory.length;
 
-      if (activities[i].category == "Adventures") {
+  for(let i = 0; i < activitiesInSelectedCategoryLength; i++ ){
+     addAdventureToAdventureSelect(activitiesInSelectedCategory[i]);
+   }
 
-        let options = document.createElement("option");
+  // adventureDetailParagraph.innerHTML = "";
+    adventureSelect.style.display = "block";
 
-        options.text = activities[i].name;
-        options.id = activities[i].id;
-        options.name = activities[i].location;
-        options.price = activities[i].price;
-        options.description = activities[i].description;
-
-        list.appendChild(options);
-      }
-
-    }
-    list.style.display = "block"
-
-
-  } else if (index == 2) {
-
-    let options = document.createElement("option");
-    options.text = "Select an Arts and Crafts";
-    list.appendChild(options);
-
-    for (let i = 0; i < length; i++) {
-
-
-      if (activities[i].category == "Arts & Crafts") {
-
-        
-        let options = document.createElement("option");
-
-        options.text = activities[i].name;
-        options.id = activities[i].id;
-        options.name = activities[i].location;
-        options.price = activities[i].price;
-        options.description = activities[i].description;
-
-        list.appendChild(options);
-
-      }
-
-    }
-
-    list.style.display = "block";
-
-
-  } else if (index == 3) {
-
-    let options = document.createElement("option");
-    options.text = "Select a Museum";
-    list.appendChild(options);
-
-    for (let i = 0; i < length; i++) {
-
-      if (activities[i].category == "Museums") {
-
-        let options = document.createElement("option");
-
-        options.text = activities[i].name;
-        options.id = activities[i].id;
-        options.name = activities[i].location;
-        options.price = activities[i].price;
-        options.description = activities[i].description;
-
-        list.appendChild(options);
-
-      }
-
-    }
-
-    list.style.display = "block";
-
-  } else if (index == 4) {
-    let options = document.createElement("option");
-    options.text = "Select a Wine Tasting";
-    list.appendChild(options);
-
-    for (let i = 0; i < length; i++) {
-
-      if (activities[i].category == "Wine Tastings") {
-
-        let options = document.createElement("option");
-
-        options.text = activities[i].name;
-        options.id = activities[i].id;
-        options.name = activities[i].location;
-        options.price = activities[i].price;
-        options.description = activities[i].description;
-
-        list.appendChild(options);
-
-      }
-
-    }
-
-    list.style.display = "block";
-
-  } else if (index == 5) {
-
-    let options = document.createElement("option");
-    options.text = "Select Other";
-    list.appendChild(options);
-
-    for (let i = 0; i < length; i++) {
-
-      if (activities[i].category == "Other") {
-
-        let options = document.createElement("option");
-
-        options.text = activities[i].name;
-        options.id = activities[i].id;
-        options.name = activities[i].location;
-        options.price = activities[i].price;
-        options.description = activities[i].description;
-
-        list.appendChild(options);
-      }
-    }
-
-    list.style.display = "block";
-
-  } else {
- 
-    para.innerHTML = "";
+  function addAdventureToAdventureSelect(adventure){
+    let newOption = document.createElement("option");
+    newOption.value = adventure.id;
+    newOption.textContent = adventure.name;
+    adventureSelect.appendChild(newOption);
   }
+
 }
 
-//dispaly activity description
-function displayActivity() {
-  document.getElementById("form").style.display = "none";
-  document.getElementById("para").style.display = "none";
-  let category = document.getElementById("category");
-  let para = document.getElementById("para");
-  let list = document.getElementById("list");
-  let form = document.getElementById("form")
+//display activity description
+function adventureSelectOnChange() {
   
-  let k = 0;
+  document.getElementById("checkoutResultParagraph").style.display = "none"
 
-  if (category.selectedIndex == 2) {
-    k = 3;
-  } else if (category.selectedIndex == 3) {
-    k = 5
-  } else if (category.selectedIndex == 4) {
-    k = 8
-  } else if (category.selectedIndex == 5) {
-    k = 10
+  let categorySelect = document.getElementById("categorySelect");
+  let adventureDetailParagraph = document.getElementById("adventureDetailParagraph");
+  let adventureSelect = document.getElementById("adventureSelect");
+  let checkoutForm = document.getElementById("checkoutForm");
+  checkoutForm.style.display = "none";
+  adventureDetailParagraph.style.display = "none";
+
+  let selectedAdventureValue = adventureSelect.value;
+
+  if(selectedAdventureValue == undefined || selectedAdventureValue == ""){
+          adventureDetailParagraph.innerHTML = ""
+          checkoutForm.style.display = "none";
+          return;
   }
-  
-  for (let i = k; i < list.length + k; i++) {
+
+  let selectedAdventure = getActivityById(activities, selectedAdventureValue);
+
+   adventureDetailParagraph.innerHTML = "You selected : " + selectedAdventure.name + "<br />" + "ID : " + selectedAdventure.id + "<br />" + "Description : " + selectedAdventure.description + "<br />" + "Location : " + selectedAdventure.name + "<br />" + "Price : " + " $ " + selectedAdventure.price;
     
-    if (list.value == activities[i].name && list[i-k].price > 0 ) {
-      
-      para.innerHTML = "You selected : " + list[i - k].text + "<br />" + "ID : " +list[i - k].id  + "<br />"  + "Description : " + list[i - k].description + "<br />" + "Location : " + list[i - k].name + "<br />" + "Price : " + " $ " + list[i - k].price ;
-
-      para.style.display = "block"
-
-      form.style.display = "block";
-      
-    }else if(list.value == activities[i].name && list[i-k].price == 0){
-      para.innerHTML = "You selected : " + list[i - k].text + "<br />" + "ID : " +list[i - k].id  + "<br />"  + "Description : " + list[i - k].description + "<br />" + "Location : " + list[i - k].name + "<br />" + "Price : " + " $ " + list[i - k].price ;
-
-      para.style.display = "block"
-
-      form.style.display = "none";
-
-    }else if(list.value == "" ){
-      para.innerHTML = ""
-
-    
-     }
-  }
+   adventureDetailParagraph.style.display = "block"
+ 
+   if(selectedAdventure.price == 0) {
+     checkoutForm.style.display = "none";
+   }
+   else{
+       checkoutForm.style.display = "block";
+   }
 
   return false;
-  
+
+}
+
+
+function getActivitiesForCategory(activities, category){
+  let activitieslength = activities.length;
+  let result = [];
+
+  for(let i = 0 ; i < activitieslength ; i++){
+    if(activities[i].category ==  category){
+      result.push(activities[i]);
+    }
+  }
+
+  return result;
+}
+
+function getActivityById(activities, id){
+  let length = activities.length;
+  for(let i = 0; i < length; i++){
+    if(activities[i].id == id){
+      return activities[i];
+    }
+  }
 }
 
 //purchase button
-function purchaseBtn(){
-  let msg = document.getElementById("message") ;
-  msg.innerHTML = "Your credit card has been charged $(amount) for (number-of- tickets) to (adventure-name). A confirmation email has been sent to (email).";
+function purchaseBtnOnClick() {
 
-
-  msg.display.style = "block"
-
+  let adventureSelect = document.getElementById("adventureSelect");
+  let tickets= document.getElementById("tickets").value;
+  for(let i = 0;i<adventureSelect.length;i++){
+   let total = tickets * adventureSelect[i].price;
   
+  let checkoutResultParagraph = document.getElementById("checkoutResultParagraph");
+  checkoutResultParagraph.style.display = "block"
+  checkoutResultParagraph.innerHTML = "Your credit card has been charged " + total;
 }
+}
+
 
 //reset button
-function resetBtn(){
-  let msg = document.getElementById("message") ;
-  msg.innerHTML = ""
-  msg.display.style = "block"
+function resetBtnOnClick() {
+
+  let checkoutResultParagraph = document.getElementById("checkoutResultParagraph");
+  checkoutResultParagraph.innerHTML = ""
+  checkoutResultParagraph.style.display = "none"
 
 }
-
 
 
 
