@@ -121,9 +121,13 @@ window.onload = function () {
 
 //problematically populating option data
 function populateCategorySelect(){
-  const categorySelect = document.getElementById("categorySelect");
+ 
+  let adventureSelect = document.getElementById("adventureSelect");
+  adventureSelect.style.display = "none";
   
 
+  const categorySelect = document.getElementById("categorySelect");
+  
   let defaultOption = document.createElement("option");
   defaultOption.value = "";
   defaultOption.textContent = "Please select a Category!";
@@ -139,16 +143,9 @@ function populateCategorySelect(){
 // append options
 
 function categorySelectOnchange() {
-
+  
   let categorySelect = document.getElementById("categorySelect");
-  let adventureSelect = document.getElementById("adventureSelect");
-  let adventureDetailParagraph = document.getElementById("adventureDetailParagraph");
-
-  adventureSelect.style.display = "none";
-
-  let index = categorySelect.selectedIndex;
-  let length = activities.length
-
+  
   //initialize the adventureSelect by clearing it and addign the first option
   adventureSelect.length = 0
   let defaultOption = document.createElement("option");
@@ -172,6 +169,7 @@ function categorySelectOnchange() {
     adventureSelect.style.display = "block";
 
   function addAdventureToAdventureSelect(adventure){
+   
     let newOption = document.createElement("option");
     newOption.value = adventure.id;
     newOption.textContent = adventure.name;
@@ -180,12 +178,12 @@ function categorySelectOnchange() {
 
 }
 
-//display activity description
-function adventureSelectOnChange() {
-  
-  document.getElementById("checkoutResultParagraph").style.display = "none"
 
-  let categorySelect = document.getElementById("categorySelect");
+function adventureSelectOnChange() {
+ 
+  document.getElementById("checkoutResultParagraph").style.display = "none"
+ 
+
   let adventureDetailParagraph = document.getElementById("adventureDetailParagraph");
   let adventureSelect = document.getElementById("adventureSelect");
   let checkoutForm = document.getElementById("checkoutForm");
@@ -219,6 +217,7 @@ function adventureSelectOnChange() {
 
 
 function getActivitiesForCategory(activities, category){
+  
   let activitieslength = activities.length;
   let result = [];
 
@@ -242,16 +241,18 @@ function getActivityById(activities, id){
 
 //purchase button
 function purchaseBtnOnClick() {
-
   let adventureSelect = document.getElementById("adventureSelect");
+  let selectedAdventureValue = adventureSelect.value;
+  let selectedAdventure = getActivityById(activities, selectedAdventureValue);
+  
   let tickets= document.getElementById("tickets").value;
-  for(let i = 0;i<adventureSelect.length;i++){
-   let total = tickets * adventureSelect[i].price;
+  
+   let total = tickets * selectedAdventure.price;
   
   let checkoutResultParagraph = document.getElementById("checkoutResultParagraph");
   checkoutResultParagraph.style.display = "block"
-  checkoutResultParagraph.innerHTML = "Your credit card has been charged " + total;
-}
+  checkoutResultParagraph.innerHTML = "Your credit card has been charged $" + total + " for " + tickets + " ticket to " + selectedAdventure.name;
+
 }
 
 
@@ -261,6 +262,8 @@ function resetBtnOnClick() {
   let checkoutResultParagraph = document.getElementById("checkoutResultParagraph");
   checkoutResultParagraph.innerHTML = ""
   checkoutResultParagraph.style.display = "none"
+
+  let tickets= document.getElementById("tickets").value = 1;
 
 }
 
