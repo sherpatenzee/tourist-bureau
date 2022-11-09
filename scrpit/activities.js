@@ -1,4 +1,5 @@
 "use strict";
+
 let categories = ["Adventures", "Arts & Crafts", "Museums", "Wine Tastings", "Other"];
 
 let activities = [
@@ -104,7 +105,6 @@ window.onload = function () {
 
   document.getElementById("checkoutForm").style.display = "none";
   document.getElementById("adventureSelect").style.display = "none";
-  
 
   let categorySelect = document.getElementById("categorySelect");
   categorySelect.onchange = categorySelectOnchange;
@@ -122,10 +122,6 @@ window.onload = function () {
 //problematically populating option data
 function populateCategorySelect(){
  
-  let adventureSelect = document.getElementById("adventureSelect");
-  adventureSelect.style.display = "none";
-  
-
   const categorySelect = document.getElementById("categorySelect");
   
   let defaultOption = document.createElement("option");
@@ -140,10 +136,12 @@ function populateCategorySelect(){
     categorySelect.appendChild(newOption);
   }
 }
+
 // append options
 
 function categorySelectOnchange() {
-  
+
+  document.getElementById("adventureSelect").style.display = "none";
   let categorySelect = document.getElementById("categorySelect");
   
   //initialize the adventureSelect by clearing it and addign the first option
@@ -165,7 +163,6 @@ function categorySelectOnchange() {
      addAdventureToAdventureSelect(activitiesInSelectedCategory[i]);
    }
 
-  // adventureDetailParagraph.innerHTML = "";
     adventureSelect.style.display = "block";
 
   function addAdventureToAdventureSelect(adventure){
@@ -175,11 +172,19 @@ function categorySelectOnchange() {
     newOption.textContent = adventure.name;
     adventureSelect.appendChild(newOption);
   }
+  if (selectedCategory == ""){
+    document.getElementById("adventureSelect").style.display = "none";
+    document.getElementById("checkoutForm").style.display = "none";
+    document.getElementById("adventureDetailParagraph").style.display = "none";
+  }
+ }
 
-}
+
+
 
 
 function adventureSelectOnChange() {
+ 
  
   document.getElementById("checkoutResultParagraph").style.display = "none"
  
@@ -217,7 +222,7 @@ function adventureSelectOnChange() {
 
 
 function getActivitiesForCategory(activities, category){
-  
+ 
   let activitieslength = activities.length;
   let result = [];
 
